@@ -19,7 +19,7 @@ void InstructionParser::load_str(const std::string &contents)
     std::string line;
     command_t command;
     int line_num = 0;
-    std::cout <<"Input:"<<std::endl;
+    //std::cout <<"Input:"<<std::endl;
     while (std::getline(whole_ss, line))
     {
         if (line.size() == 0)
@@ -27,7 +27,7 @@ void InstructionParser::load_str(const std::string &contents)
             continue;
         }
 
-        std::cout << line << std::endl;
+        //std::cout << line << std::endl;
         if (line_num == 0)
         {
             parse_edge(line);

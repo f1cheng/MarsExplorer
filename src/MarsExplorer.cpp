@@ -15,8 +15,9 @@ static char get_direction(Direction d)
 
 MarsExplorer::MarsExplorer(const command_t &command) 
 {
-    _origin = Position(command.pos);
-    _destination = _origin; 
+   //_origin = Position(command.pos);
+   // _destination = _origin; 
+    _destination = Position(command.pos);
     _movings = command.movings;
 
 }
@@ -24,7 +25,7 @@ MarsExplorer::MarsExplorer(const command_t &command)
 position_t MarsExplorer::walk_through(Grid &grid)
 {
     _state = grid.visit(_destination, _movings);
-    print_destination();
+    //print_destination();
     return _destination.get();
 
 }

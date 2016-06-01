@@ -2,22 +2,13 @@
 
 #include "Position.h"
 
-bool operator==(position_t &p1, position_t &p2)
+bool operator==(const position_t &p1, const position_t &p2)
 {
     if (p1.x == p2.x &&
         p1.y == p2.y &&
         p1.direction == p2.direction)
         return true;
     return false;    
-}
-
-bool operator==(Position &p1, Position &p2)
-{
-    if (p1.get().x == p2.get().x &&
-        p1.get().y == p2.get().y &&
-        p1.get().direction == p2.get().direction)
-        return true;
-    return false;
 }
 
 Position::Position(const position_t &p)

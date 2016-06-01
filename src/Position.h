@@ -42,7 +42,7 @@ typedef struct {
     Direction direction;
 } position_t;
 
-bool operator==(position_t &p1, position_t &p2);
+bool operator==(const position_t &p1, const position_t &p2);
 
 
 typedef struct {
@@ -56,7 +56,6 @@ public:
     Position() {};
     Position(const position_t &p);
     ~Position() {};
-    friend bool operator==(Position &p1, Position &p2);
     bool move(const Moving moving);
     position_t get()
     {
