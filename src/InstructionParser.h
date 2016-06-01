@@ -13,6 +13,7 @@ public:
    ~InstructionParser(); 
 
    void load(const std::string &filename);
+   void load_str(const std::string &contents);
 
 private:
     void parse_edge(const std::string &line);

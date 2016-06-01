@@ -12,6 +12,11 @@ typedef enum {
     LEFT, RIGHT, FORWARD
 } Moving;
 
+typedef enum {
+    OK,
+    OCCUPIED,
+    OUT_OF_RANGE
+} STATE;
 const std::map<char, Direction> DIRECTIONS = {{'E', EAST},
                                               {'S', SOURTH},
                                               {'W', WEST},
@@ -20,6 +25,11 @@ const std::map<char, Direction> DIRECTIONS = {{'E', EAST},
 const std::map<char, Moving> MOVINGS = {{'L', LEFT},
                                         {'R', RIGHT},
                                         {'M', FORWARD}};
+
+const std::map<char, std::string> STATES = {{0, ""},
+                                            {1, "OCCUPIED"},
+                                            {2, "OUT OF RANGE"}};
+
 
 typedef struct {
     int x;

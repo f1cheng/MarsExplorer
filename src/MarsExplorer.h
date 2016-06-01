@@ -11,13 +11,13 @@ public:
     MarsExplorer() {};
     ~MarsExplorer() {};
     MarsExplorer(const command_t &command);
-    void walk_through(Grid &grid);
-    position_t walk_through2(Grid &grid);
-
+    position_t walk_through(Grid &grid);
+    void print_destination();
 private:
     Position _origin;
     std::vector<Moving> _movings;
     Position _destination;
+    STATE _state;
 };
 
 #endif

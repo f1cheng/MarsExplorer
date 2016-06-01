@@ -9,7 +9,7 @@
 class MarsPlan
 {
 public:
-    MarsPlan() {};
+    MarsPlan();
     virtual ~MarsPlan() {};
     void init_actions(const std::string &filename);
     void exec();
@@ -19,7 +19,7 @@ public:
     }; 
 private:
     std::vector<MarsExplorer> _explorers;
-    Grid _grid; 
+    Grid *_grid; 
     std::vector<position_t> _dests;     
     
     InstructionParser _parser; 

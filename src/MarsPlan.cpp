@@ -2,13 +2,28 @@
 
 #include "MarsPlan.h"
 
-void MarsPlan::init_actions(const std::string &filename) 
+MarsPlan::MarsPlan()
 {
     _dests.clear();
-    _parser.load(filename);
     _commands.clear(); 
+}
+
+void MarsPlan::init_actions(const std::string &filename) 
+{
+/*    
+
+5 5\n1 2 N\nLMLMLMLMM
+1 2 N
+LMLMLMLMM
+
+*/
+    _parser.load(filename);
+    //std::string contents = std::string("5 5\n1 2 N\nLMLMLMLMM");
+    //_parser.load_str(contents);
     _parser.get_commands(_commands);
     _parser.get_edge(_edge);
+    
+    _grid = new Grid(_edge.x, _edge.y);
     for (const auto &com : _commands)
     {
        MarsExplorer explorer(com);
@@ -22,7 +37,7 @@ void MarsPlan::exec()
     position_t p;
     for (auto mar : _explorers)
     {
-        p = mar.walk_through2(_grid);
+        p = mar.walk_through(*_grid);
         _dests.push_back(p);
     }
 }    

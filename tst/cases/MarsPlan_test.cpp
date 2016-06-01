@@ -4,6 +4,17 @@
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+TEST(MarsPlan_test, left)
+{
+}
+
+TEST(MarsPlan_test, right)
+{
+}
+
+TEST(MarsPlan_test, forward)
+{
+}
 
 TEST(MarsPlan_test, two_go_destinations)
 {

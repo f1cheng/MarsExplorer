@@ -3,10 +3,10 @@ USER_DIR = ..
 CPPFLAGS += -isystem $(USER_DIR)/src
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread -DNO__UT__
+CXXFLAGS += -g -Wall -Wextra -pthread -DNO__UT__ -std=c++11
 
 #to rename for TESTS
-TESTS = mars_explorer
+TESTS = mars_plan
 
 #.PHONY : all
 all : $(TESTS)

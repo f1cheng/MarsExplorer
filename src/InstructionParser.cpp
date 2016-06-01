@@ -10,6 +10,43 @@ InstructionParser::~InstructionParser()
     }
 } 
 
+void InstructionParser::load_str(const std::string &contents)
+{
+
+    std::stringstream whole_ss(contents);
+    _commands.clear();
+    
+    std::string line;
+    command_t command;
+    int line_num = 0;
+    std::cout <<"Input:"<<std::endl;
+    while (std::getline(whole_ss, line))
+    {
+        if (line.size() == 0)
+        {
+            continue;
+        }
+
+        std::cout << line << std::endl;
+        if (line_num == 0)
+        {
+            parse_edge(line);
+        }
+        else if ((line_num%2) == 1)
+        {
+            parse_position(line, command);
+        }
+        else
+        {
+            parse_action(line, command); 
+        }
+        
+        line_num++;
+    }
+    
+}
+
+
 void InstructionParser::load(const std::string &filename)
 {
     _commands.clear();
@@ -77,13 +114,27 @@ void InstructionParser::parse_position(const std::string &line, command_t &comma
     }
     command.pos.x = x;
     command.pos.y = y;
-    command.pos.direction = DIRECTIONS.at(d);
+    try
+    {
+        command.pos.direction = DIRECTIONS.at(d);
+    }
+    catch(const std::exception &e)
+    {
+        throw std::runtime_error("ERROR: Parse direction");
+    }
 }
 
 void InstructionParser::parse_action(const std::string &line, command_t &command)
 {
-    for (const auto &m : line)
-        command.movings.push_back(MOVINGS.at(m));
+    try 
+    {
+        for (const auto &m : line)
+            command.movings.push_back(MOVINGS.at(m));
+    }
+    catch(const std::exception &e) 
+    { 
+        throw std::runtime_error("ERROR: Parse moving");
+    }
     _commands.push_back(command);
     command.movings.clear();
 }  
