@@ -19,6 +19,7 @@ private:
     bool out_of_range(Position &pos);
     void set_occupied(Position &pos);
     bool is_occupied(Position &pos);
+
     Coordinate _edge;
     int **_coords;
 };

@@ -9,7 +9,6 @@ int main_func(int argc, char **argv)
     (void)argc;
     (void)argv;
     MarsPlan plan;
-    std::vector<position_t> dests;
     plan.init_actions("test.txt");
     plan.exec();
     return 0;

@@ -20,17 +20,6 @@ bool operator==(Position &p1, Position &p2)
     return false;
 }
 
-   
-static char get_direction(Direction d)
-{
-    for (std::map<char, Direction>::const_iterator it = DIRECTIONS.begin(); it != DIRECTIONS.end(); it++)
-    {
-        if (it->second == d)
-            return it->first;
-    }    
-    return ' ';
-}
-
 Position::Position(const position_t &p)
 {
    _p.x = p.x;
@@ -39,11 +28,13 @@ Position::Position(const position_t &p)
 
 }
 
+/*
 void Position::print() 
 {
     char c = get_direction(_p.direction);
     std::cout << _p.x << " " << _p.y << " " << c << std::endl;
 }
+*/
 
 bool Position::move(const Moving moving)
 {

@@ -57,12 +57,12 @@ public:
     Position(const position_t &p);
     ~Position() {};
     friend bool operator==(Position &p1, Position &p2);
-    void print();
     bool move(const Moving moving);
     position_t get()
     {
         return _p;
     }
+
 private:
     position_t _p; 
 

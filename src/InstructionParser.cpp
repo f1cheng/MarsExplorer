@@ -90,10 +90,10 @@ void InstructionParser::load(const std::string &filename)
 
 void InstructionParser::parse_edge(const std::string &line)
 {
-    ss.clear(); 
-    ss.str(line);
-    ss >> _edge.x >>_edge.y;
-    if (ss.fail())
+    _ss.clear(); 
+    _ss.str(line);
+    _ss >> _edge.x >>_edge.y;
+    if (_ss.fail())
     {
         throw std::runtime_error("ERROR: Parse edge");
     }
@@ -104,11 +104,11 @@ void InstructionParser::parse_position(const std::string &line, command_t &comma
 {
     int x, y;
     char d;
-    ss.clear();
-    ss.str(line);
-    ss >> x >>y >>d;
+    _ss.clear();
+    _ss.str(line);
+    _ss >> x >>y >>d;
     
-    if (ss.fail())
+    if (_ss.fail())
     {
         throw std::runtime_error("ERROR: Parse position");
     }

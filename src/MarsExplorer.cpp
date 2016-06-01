@@ -2,9 +2,10 @@
 
 #include "MarsExplorer.h"
    
-static char get_direction2(Direction d)
+static char get_direction(Direction d)
 {
-    for (std::map<char, Direction>::const_iterator it = DIRECTIONS.begin(); it != DIRECTIONS.end(); it++)
+    for (std::map<char, Direction>::const_iterator it = DIRECTIONS.begin(); 
+         it != DIRECTIONS.end(); it++)
     {
         if (it->second == d)
             return it->first;
@@ -30,7 +31,7 @@ position_t MarsExplorer::walk_through(Grid &grid)
 
 void MarsExplorer::print_destination()
 {
-    char c = get_direction2(_destination.get().direction);
+    char c = get_direction(_destination.get().direction);
     std::cout << _destination.get().x << " " << _destination.get().y << " " << c << " " << STATES.at(_state) <<std::endl;    
 }
 
