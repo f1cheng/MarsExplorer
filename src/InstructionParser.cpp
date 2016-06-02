@@ -10,24 +10,24 @@ InstructionParser::~InstructionParser()
     }
 } 
 
-void InstructionParser::load_str(const std::string &contents)
+void InstructionParser::parse()
 {
-
-    std::stringstream whole_ss(contents);
-    _commands.clear();
-    
     std::string line;
     command_t command;
     int line_num = 0;
-    //std::cout <<"Input:"<<std::endl;
-    while (std::getline(whole_ss, line))
+#ifndef __UT__
+    std::cout <<"Input:"<<std::endl;
+#endif
+    while (std::getline(_contents, line))
     {
         if (line.size() == 0)
         {
             continue;
         }
 
-        //std::cout << line << std::endl;
+#ifndef __UT__
+        std::cout << line << std::endl;
+#endif
         if (line_num == 0)
         {
             parse_edge(line);
@@ -43,49 +43,27 @@ void InstructionParser::load_str(const std::string &contents)
         
         line_num++;
     }
-    
+}
+
+void InstructionParser::load_str(const std::string &contents)
+{
+
+    _contents.str(contents);
+    parse(); 
 }
 
 
 void InstructionParser::load(const std::string &filename)
 {
-    _commands.clear();
     _inputfile.open(filename);
     if (!_inputfile.is_open())
     {
         throw std::runtime_error("ERROR: " + _filename + " not found.");
     }
-    
-    std::string line;
-    command_t command;
-    int line_num = 0;
-    std::cout <<"Input:"<<std::endl;
-    while (!_inputfile.eof())
-    {
-        std::getline(_inputfile, line);
-        if (line.size() == 0)
-        {
-            continue;
-        }
-
-        std::cout << line << std::endl;
-        if (line_num == 0)
-        {
-            parse_edge(line);
-        }
-        else if ((line_num%2) == 1)
-        {
-            parse_position(line, command);
-        }
-        else
-        {
-            parse_action(line, command); 
-        }
-        
-        line_num++;
-    }
-    
+    _contents << _inputfile.rdbuf();    
     _inputfile.close();
+    
+    parse();
 }
 
 void InstructionParser::parse_edge(const std::string &line)

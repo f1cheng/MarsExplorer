@@ -9,7 +9,12 @@
 class InstructionParser
 {
 public:
-   InstructionParser():_filename(), _inputfile() {};
+   InstructionParser():_filename(), _inputfile() 
+   {
+        _commands.clear();
+        _contents.clear();
+   };
+
    ~InstructionParser(); 
 
    void load(const std::string &filename);
@@ -18,6 +23,7 @@ public:
    void get_edge(Coordinate &edge);
 
 private:
+    void parse();
     void parse_edge(const std::string &line);
     void parse_position(const std::string &line, command_t &command);
     void parse_action(const std::string &line, command_t &command);
@@ -27,6 +33,7 @@ private:
     Coordinate _edge;
     std::vector<command_t> _commands;
     
+    std::stringstream _contents;    
     std::stringstream _ss;
 
 };
