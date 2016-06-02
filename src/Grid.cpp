@@ -77,7 +77,7 @@ Coordinate Grid::get_edge(void)
 bool Grid::out_of_range(Position &pos)
 {
     if((pos.get().x > _edge.x) ||
-       (pos.get().y > _edge.x))
+       (pos.get().y > _edge.y))
         return true;
     if ((pos.get().x <0) ||
         (pos.get().y <0))

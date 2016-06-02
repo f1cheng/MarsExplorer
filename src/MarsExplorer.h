@@ -18,6 +18,10 @@ public:
     {
         return _destination;
     };
+    STATE get_state()
+    {
+        return _state;
+    }
 private:
     Position _origin;
     std::vector<Moving> _movings;

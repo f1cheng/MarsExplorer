@@ -4,7 +4,8 @@
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-TEST(MarsPlan_test, left)
+
+TEST(turn_left_test, east_to_north)
 {
 
     std::string contents = std::string("5 5\n1 2 E\nL");
@@ -12,71 +13,168 @@ TEST(MarsPlan_test, left)
     plan.exec();
     //plan.print();
 
-    position_t p1 = {1, 2, NORTH};
     std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 2, NORTH};
     EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
 }
 
-TEST(MarsPlan_test, right)
+TEST(turn_left_test, sourth_to_east)
 {
+
+    std::string contents = std::string("5 5\n1 2 S\nL");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 2, EAST};
+    EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
+}
+
+
+TEST(turn_left_test, west_to_sourth)
+{
+
+    std::string contents = std::string("5 5\n1 2 W\nL");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 2, SOURTH};
+    EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
+}
+
+
+TEST(turn_left_test, north_west)
+{
+
+    std::string contents = std::string("5 5\n1 2 N\nL");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 2, WEST};
+    EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
+}
+
+TEST(turn_right_test, east_to_sourth)
+{
+
     std::string contents = std::string("5 5\n1 2 E\nR");
     MarsPlan plan(contents);
     plan.exec();
 
-    position_t p1 = {1, 2, SOURTH};
     std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 2, SOURTH};
     EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
-
-
 }
 
-TEST(MarsPlan_test, forward)
+TEST(turn_right_test, sourth_to_west)
+{
+
+    std::string contents = std::string("5 5\n1 2 S\nR");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 2, WEST};
+    EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
+}
+
+
+TEST(turn_right_test, west_to_north)
+{
+
+    std::string contents = std::string("5 5\n1 2 W\nR");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 2, NORTH};
+    EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
+}
+
+
+TEST(turn_right_test, north_east)
+{
+
+    std::string contents = std::string("5 5\n1 2 N\nR");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 2, EAST};
+    EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
+}
+
+TEST(move_forward_test, to_east)
 {
     std::string contents = std::string("5 5\n1 2 E\nM");
     MarsPlan plan(contents);
     plan.exec();
 
-    position_t p1 = {2, 2, EAST};
     std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {2, 2, EAST};
     EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
-
-
 }
 
 
-TEST(MarsPlan_test, forward_out_of_boundary)
+TEST(move_forward_test, to_sourth)
 {
-    std::string contents = std::string("5 5\n0 0 S\nM");
+    std::string contents = std::string("5 5\n1 2 S\nM");
     MarsPlan plan(contents);
     plan.exec();
 
-    position_t p1 = {0, -1, SOURTH};
     std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 1, SOURTH};
     EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
-
-
 }
 
 
-/*
-TEST(DISABLED_MarsPlan_test, two_go_destinations)
+TEST(move_forward_test, to_west)
 {
-  MarsPlan plan;
-  std::vector<position_t> dests;
-  plan.init_actions("test.txt");
-  plan.exec();
-  dests = plan.get_destinations();
-  
-  position_t p1={1, 3, NORTH};
-  position_t p2={5, 1, EAST};
-  std::vector<position_t> expect_dests;
-  expect_dests.clear();
-  expect_dests.push_back(p1);
-  expect_dests.push_back(p2);
+    std::string contents = std::string("5 5\n1 2 WEST\nM");
+    MarsPlan plan(contents);
+    plan.exec();
 
-  for (unsigned int i = 0; i < dests.size(); i++)
-  {    
-      EXPECT_EQ(true, dests[i] == expect_dests[i]); 
-  }
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {0, 2, WEST};
+    EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
 }
-*/
+
+
+TEST(move_forward_test, to_north)
+{
+    std::string contents = std::string("5 5\n1 2 NORTH\nM");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {1, 3, NORTH};
+    EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
+}
+
+TEST(move_forward_test, out_of_range)
+{
+    std::string contents = std::string("1 2\n1 2 E\nM");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {2, 2, EAST};
+    EXPECT_EQ(true, p1 == explorers[0].get_destination().get());    
+    EXPECT_EQ(true, OUT_OF_RANGE == explorers[0].get_state());    
+}
+
+TEST(move_conflict_test, pos_was_occupied)
+{
+    std::string contents = std::string("5 5\n1 2 E\nMM\n1 2 E\nMM");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    position_t p1 = {3, 2, EAST};
+    EXPECT_EQ(true, p1 == explorers[1].get_destination().get());    
+    EXPECT_EQ(true, OCCUPIED == explorers[1].get_state());    
+
+
+}
