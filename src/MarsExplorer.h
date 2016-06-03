@@ -22,8 +22,9 @@ public:
     {
         return _state;
     }
+
 private:
-    Position _origin;
+    //Position _origin;
     std::vector<Moving> _movings;
     Position _destination;
     STATE _state;

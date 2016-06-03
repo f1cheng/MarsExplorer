@@ -94,7 +94,7 @@ TEST(turn_right_test, west_to_north)
 }
 
 
-TEST(turn_right_test, north_east)
+TEST(turn_right_test, north_to_east)
 {
 
     std::string contents = std::string("5 5\n1 2 N\nR");
