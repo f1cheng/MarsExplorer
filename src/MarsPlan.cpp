@@ -43,11 +43,9 @@ void MarsPlan::init_actions(const std::string &filename)
 
 void MarsPlan::exec()
 {
-    position_t p;
     for (auto &mar : _explorers)
     {
-        p = mar.walk_through(*_grid);
-        _dests.push_back(p);
+        mar.visit(*_grid);
     }
 }
 
@@ -56,6 +54,6 @@ void MarsPlan::print()
     std::cout <<"Output:"<<std::endl;
     for (auto &mar : _explorers)
     {
-        mar.print_destination();
+        mar.print_pos();
     }
 }    

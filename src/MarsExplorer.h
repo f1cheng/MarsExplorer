@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 
+#include "Position.h"
 #include "Grid.h"
 
 class MarsExplorer
@@ -11,23 +12,29 @@ class MarsExplorer
 public:
     MarsExplorer() {};
     ~MarsExplorer() {};
-    MarsExplorer(const command_t &command);
-    position_t walk_through(Grid &grid);
-    void print_destination();
-    Position get_destination()
+    MarsExplorer(const Command &command);
+    void print_pos();
+    Position get_pos()
     {
-        return _destination;
+        return _curr_pos;
     };
-    STATE get_state()
+
+    State get_state()
     {
         return _state;
-    }
+    };
 
+    void visit(Grid &grid);
 private:
-    //Position _origin;
+    Position lookat_next(Moving moving);
+    void left(Position &p);
+    void right(Position &p);
+    void forward(Position &p);
+
     std::vector<Moving> _movings;
-    Position _destination;
-    STATE _state;
+    Position _curr_pos;
+    Position _block_pos;
+    State _state;
 };
 
 #endif

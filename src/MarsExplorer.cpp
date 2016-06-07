@@ -13,26 +13,88 @@ static char get_direction(Direction d)
     return ' ';
 }
 
-MarsExplorer::MarsExplorer(const command_t &command) 
+MarsExplorer::MarsExplorer(const Command &command) 
 {
-   //_origin = Position(command.pos);
-   // _destination = _origin; 
-    _destination = Position(command.pos);
+    _curr_pos = command.pos;
     _movings = command.movings;
 
 }
 
-position_t MarsExplorer::walk_through(Grid &grid)
+void MarsExplorer::print_pos()
 {
-    _state = grid.visit(_destination, _movings);
-    //print_destination();
-    return _destination.get();
-
+    char c = get_direction(_curr_pos.direction);
+    std::cout << _curr_pos.coor.x << " " << _curr_pos.coor.y << " " << c << " " << STATES.at(_state)<< " ";
+    if (_state == OCCUPIED)
+    {
+        std::cout <<_block_pos.coor.x << " " << _block_pos.coor.y <<std::endl;    
+    }
+    else
+    {
+        std::cout <<std::endl;
+    }
 }
 
-void MarsExplorer::print_destination()
+void MarsExplorer::visit(Grid &grid)
 {
-    char c = get_direction(_destination.get().direction);
-    std::cout << _destination.get().x << " " << _destination.get().y << " " << c << " " << STATES.at(_state) <<std::endl;    
+    _state = grid.check_pos(_curr_pos);
+    if (_state != OK)
+    {
+        return;
+    }
+
+    for (auto const moving : _movings)
+    {
+        Position new_pos = lookat_next(moving);
+        _state = grid.check_pos(new_pos);
+        if (_state == OCCUPIED)
+        {
+            _block_pos = new_pos;
+            break;
+        }
+        _curr_pos = new_pos;
+    }
+    grid.set_occupied(_curr_pos);
+}
+
+Position MarsExplorer::lookat_next(Moving moving)
+{   
+    Position pos =_curr_pos;
+    switch (moving)
+    {
+    case LEFT:
+        left(pos);
+        break;
+    case RIGHT:
+        right(pos);
+        break;
+    case FORWARD:
+        forward(pos);
+        break;
+    default:
+        break;
+    }
+    return pos;
+}
+
+void MarsExplorer::left(Position &pos)
+{
+    pos.direction = static_cast<Direction>((pos.direction+3) % 4);
+}
+
+void MarsExplorer::right(Position &pos)
+{
+    pos.direction = static_cast<Direction>((pos.direction+1) % 4);
+}
+
+void MarsExplorer::forward(Position &pos)
+{
+    if (pos.direction == EAST)
+        pos.coor.x += 1;
+    else if (pos.direction == SOURTH)
+        pos.coor.y -= 1;
+    else if (pos.direction == WEST)
+        pos.coor.x -= 1;
+    else if (pos.direction == NORTH)
+        pos.coor.y += 1;
 }
 

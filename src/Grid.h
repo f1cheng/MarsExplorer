@@ -11,13 +11,14 @@ public:
     Grid(int x, int y);
     ~Grid();
 
-    STATE visit(Position &pos, std::vector<Moving> movings);
     void set_edge(int x, int y);
     Coordinate get_edge(void);
-private:
-    STATE check_pos(Position &pos);
-    bool out_of_range(Position &pos);
     void set_occupied(Position &pos);
+
+    State check_pos(Position &pos);
+private:
+
+    bool out_of_range(Position &pos);
     bool is_occupied(Position &pos);
 
     Coordinate _edge;

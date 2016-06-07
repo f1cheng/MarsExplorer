@@ -15,8 +15,10 @@ typedef enum {
 typedef enum {
     OK,
     OCCUPIED,
-    OUT_OF_RANGE
-} STATE;
+    OUT_OF_RANGE,
+    BLOCKED = 10
+} State;
+
 const std::map<char, Direction> DIRECTIONS = {{'E', EAST},
                                               {'S', SOURTH},
                                               {'W', WEST},
@@ -37,38 +39,24 @@ typedef struct {
 } Coordinate;
 
 typedef struct {
-    int x;
-    int y;
+    Coordinate coor;
     Direction direction;
-} position_t;
+} Position;
 
-bool operator==(const position_t &p1, const position_t &p2);
+extern bool operator==(const Position &p1, const Position &p2);
 
+inline bool operator==(const Position &p1, const Position &p2)
+{
+    if (p1.coor.x == p2.coor.x &&
+        p1.coor.y == p2.coor.y &&
+        p1.direction == p2.direction)
+        return true;
+    return false;    
+}
 
 typedef struct {
-    position_t pos;
+    Position pos;
     std::vector<Moving> movings;
-} command_t;
-
-class Position
-{
-public:
-    Position() {};
-    Position(const position_t &p);
-    ~Position() {};
-    bool move(const Moving moving);
-    position_t get()
-    {
-        return _p;
-    }
-
-private:
-    position_t _p; 
-
-    void left();
-    void right();
-    void forward();
-
-};
+} Command;
 
 #endif

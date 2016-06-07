@@ -19,7 +19,7 @@ public:
         return _explorers;
     }
 
-    std::vector<position_t> get_destinations()
+    std::vector<Position> get_destinations()
     {
        return _dests; 
     }; 
@@ -27,11 +27,11 @@ public:
 private:
     std::vector<MarsExplorer> _explorers;
     Grid *_grid; 
-    std::vector<position_t> _dests;     
+    std::vector<Position> _dests;     
     
     InstructionParser _parser; 
     Coordinate _edge;
-    std::vector<command_t> _commands;
+    std::vector<Command> _commands;
 };
 
 #endif

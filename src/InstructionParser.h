@@ -19,19 +19,19 @@ public:
 
    void load(const std::string &filename);
    void load_str(const std::string &contents);
-   void get_commands(std::vector<command_t> &commands);
+   void get_commands(std::vector<Command> &commands);
    void get_edge(Coordinate &edge);
 
 private:
     void parse();
     void parse_edge(const std::string &line);
-    void parse_position(const std::string &line, command_t &command);
-    void parse_action(const std::string &line, command_t &command);
+    void parse_position(const std::string &line, Command &command);
+    void parse_action(const std::string &line, Command &command);
 
     std::string _filename;
     std::ifstream _inputfile;
     Coordinate _edge;
-    std::vector<command_t> _commands;
+    std::vector<Command> _commands;
     
     std::stringstream _contents;    
     std::stringstream _ss;

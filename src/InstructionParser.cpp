@@ -13,7 +13,7 @@ InstructionParser::~InstructionParser()
 void InstructionParser::parse()
 {
     std::string line;
-    command_t command;
+    Command command;
     int line_num = 0;
 #ifndef __UT__
     std::cout <<"Input:"<<std::endl;
@@ -78,7 +78,7 @@ void InstructionParser::parse_edge(const std::string &line)
 
 }
 
-void InstructionParser::parse_position(const std::string &line, command_t &command)
+void InstructionParser::parse_position(const std::string &line, Command &command)
 {
     int x, y;
     char d;
@@ -90,8 +90,8 @@ void InstructionParser::parse_position(const std::string &line, command_t &comma
     {
         throw std::runtime_error("ERROR: Parse position");
     }
-    command.pos.x = x;
-    command.pos.y = y;
+    command.pos.coor.x = x;
+    command.pos.coor.y = y;
     try
     {
         command.pos.direction = DIRECTIONS.at(d);
@@ -102,7 +102,7 @@ void InstructionParser::parse_position(const std::string &line, command_t &comma
     }
 }
 
-void InstructionParser::parse_action(const std::string &line, command_t &command)
+void InstructionParser::parse_action(const std::string &line, Command &command)
 {
     try 
     {
@@ -117,7 +117,7 @@ void InstructionParser::parse_action(const std::string &line, command_t &command
     command.movings.clear();
 }  
 
-void InstructionParser::get_commands(std::vector<command_t> &commands)
+void InstructionParser::get_commands(std::vector<Command> &commands)
 {
     commands = _commands;
 }
