@@ -44,7 +44,7 @@ void MarsExplorer::visit(Grid &grid)
 
     for (auto const moving : _movings)
     {
-        Position new_pos = lookat_next(moving);
+        Position new_pos = lookat_next(moving, grid);
         _state = grid.check_pos(new_pos);
         if (_state == OCCUPIED)
         {
@@ -56,7 +56,7 @@ void MarsExplorer::visit(Grid &grid)
     grid.set_occupied(_curr_pos);
 }
 
-Position MarsExplorer::lookat_next(Moving moving)
+Position MarsExplorer::lookat_next(Moving moving, Grid &grid)
 {   
     Position pos =_curr_pos;
     switch (moving)
@@ -68,7 +68,7 @@ Position MarsExplorer::lookat_next(Moving moving)
         right(pos);
         break;
     case FORWARD:
-        forward(pos);
+        forward(pos, grid);
         break;
     default:
         break;
@@ -86,7 +86,7 @@ void MarsExplorer::right(Position &pos)
     pos.direction = static_cast<Direction>((pos.direction+1) % 4);
 }
 
-void MarsExplorer::forward(Position &pos)
+void MarsExplorer::forward(Position &pos, Grid &grid)
 {
     if (pos.direction == EAST)
         pos.coor.x += 1;
@@ -96,5 +96,32 @@ void MarsExplorer::forward(Position &pos)
         pos.coor.x -= 1;
     else if (pos.direction == NORTH)
         pos.coor.y += 1;
+
+    process_edge(pos, grid);
+}
+
+void MarsExplorer::process_edge(Position &pos, Grid &grid)
+{
+    int edge_x, edge_y;
+    edge_x = grid.get_edge().x;
+    edge_y = grid.get_edge().y;
+    
+    if (pos.coor.x == (edge_x + 1))
+    {
+        pos.coor.x = 0;
+    }
+    else if (pos.coor.x == -1)
+    {
+        pos.coor.x = edge_x;
+    }
+ 
+    if (pos.coor.y == (edge_y + 1))
+    {
+        pos.coor.y = 0;
+    }
+    else if (pos.coor.y == -1)
+    {
+        pos.coor.y = edge_y;
+    }
 }
 

@@ -12,7 +12,11 @@ public:
     MarsPlan(const std::string &instruction_str);
     virtual ~MarsPlan() {};
     void init_actions(const std::string &filename);
+
+    void run(const std::string &instruction_str);
+    void init_command(const std::string &instruction_str);
     void exec();
+
     void print();
     std::vector<MarsExplorer> &get_explorers()
     {

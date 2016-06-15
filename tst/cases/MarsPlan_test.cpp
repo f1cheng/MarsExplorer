@@ -5,17 +5,86 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-TEST(turn_left_test, east_to_north)
+using ::testing::_;
+
+class MarsTesting : public ::testing::Test
+{
+public:
+    virtual void SetUp()
+    {
+    };
+    
+    virtual void TearDown()
+    {
+    };
+
+    void test1(const std::string &contents)
+    {
+        plan.run(contents);
+        get_pos_for_explorer(0);
+    };
+
+    void test2(const std::string &contents, Position expect_pos)
+    {
+        plan.run(contents);
+        get_pos_for_explorer(0);
+        //Position expect_pos = {1, 2, NORTH};
+        EXPECT_EQ(expect_pos, test_pos);    
+   
+    };
+
+
+    void get_pos_for_explorer(int i)
+    {
+        explorers = plan.get_explorers();
+        test_pos = explorers[i].get_pos();  
+    };
+
+    ~MarsTesting(){};
+private:
+protected:
+    MarsPlan plan;
+    std::vector<MarsExplorer> explorers;
+    Position test_pos;
+};
+
+TEST_F(MarsTesting, testxxxx1)
+{
+    std::string contents = std::string("5 5\n1 2 E\nL");
+    plan.run(contents);
+    EXPECT_EQ(0, 0);
+}
+
+//TEST_F(turn_left_test, east_to_north)
+TEST_F(MarsTesting, east_to_north)
 {
 
     std::string contents = std::string("5 5\n1 2 E\nL");
-    MarsPlan plan(contents);
-    plan.exec();
 
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, NORTH};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
+    //MarsPlan plan(contents);
+    //plan.exec();
+    test1(contents);
+    Position expect_pos = {1, 2, NORTH};
+    EXPECT_EQ(expect_pos, test_pos);    
+    //std::vector<MarsExplorer> explorers = plan.get_explorers();
+    //Position p1 = {1, 2, NORTH};
+    //EXPECT_EQ(p1, explorers[0].get_pos());    
 }
+
+TEST_F(MarsTesting, east_turn_left_to_north2)
+{
+
+    std::string contents = std::string("5 5\n1 2 E\nL");
+
+    Position expect_pos = {1, 2, NORTH};
+    test2(contents, expect_pos);
+    //std::vector<MarsExplorer> explorers = plan.get_explorers();
+    //Position p1 = {1, 2, NORTH};
+    //EXPECT_EQ(p1, explorers[0].get_pos());    
+}
+
+
+
 
 TEST(turn_left_test, sourth_to_east)
 {
@@ -152,16 +221,48 @@ TEST(move_forward_test, to_north)
     EXPECT_EQ(p1, explorers[0].get_pos());    
 }
 
-TEST(move_forward_test, out_of_range)
+TEST(move_forward_test, toward_east_when_out_of_edge)
 {
     std::string contents = std::string("1 2\n1 2 E\nM");
     MarsPlan plan(contents);
     plan.exec();
 
     std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {2, 2, EAST};
+    Position p1 = {0, 2, EAST};
     EXPECT_EQ(p1, explorers[0].get_pos());    
-    EXPECT_EQ(OUT_OF_RANGE, explorers[0].get_state());    
+}
+
+TEST(move_forward_test, toward_sourth_when_out_of_edge)
+{
+    std::string contents = std::string("1 2\n1 0 S\nM");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    Position p1 = {1, 2, SOURTH};
+    EXPECT_EQ(p1, explorers[0].get_pos());    
+}
+
+TEST(move_forward_test, toward_west_when_out_of_edge)
+{
+    std::string contents = std::string("1 2\n0 2 W\nM");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    Position p1 = {1, 2, WEST};
+    EXPECT_EQ(p1, explorers[0].get_pos());    
+}
+
+TEST(move_forward_test, toward_north_when_out_of_edge)
+{
+    std::string contents = std::string("1 2\n1 2 N\nM");
+    MarsPlan plan(contents);
+    plan.exec();
+
+    std::vector<MarsExplorer> explorers = plan.get_explorers();
+    Position p1 = {1, 0, NORTH};
+    EXPECT_EQ(p1, explorers[0].get_pos());    
 }
 
 TEST(move_conflict_test, pos_was_occupied)
@@ -177,3 +278,4 @@ TEST(move_conflict_test, pos_was_occupied)
 
 
 }
+

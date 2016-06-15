@@ -26,10 +26,11 @@ public:
 
     void visit(Grid &grid);
 private:
-    Position lookat_next(Moving moving);
+    Position lookat_next(Moving moving, Grid &grid);
     void left(Position &p);
     void right(Position &p);
-    void forward(Position &p);
+    void forward(Position &p, Grid &grid);
+    void process_edge(Position &p, Grid &grid);
 
     std::vector<Moving> _movings;
     Position _curr_pos;
