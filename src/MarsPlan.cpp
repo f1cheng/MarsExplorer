@@ -8,41 +8,22 @@ MarsPlan::MarsPlan()
     _commands.clear(); 
 }
 
-MarsPlan::MarsPlan(const std::string &instruction_str)
+void MarsPlan::dispatch_command(const std::string &instruction_str)
 {
-
     _parser.load_str(instruction_str);
     _parser.get_commands(_commands);
     _parser.get_edge(_edge);
     
-    _grid = new Grid(_edge.x, _edge.y);
+    _grid = new StateGrid(_edge.x, _edge.y);
     for (const auto &com : _commands)
     {
-       MarsExplorer explorer(com);
+       Explorer explorer(com);
        _explorers.push_back(explorer);
     }
-
-
 }
 
-void MarsPlan::init_command(const std::string &instruction_str)
-{
-
-    _parser.load_str(instruction_str);
-    _parser.get_commands(_commands);
-    _parser.get_edge(_edge);
-    
-    _grid = new Grid(_edge.x, _edge.y);
-    for (const auto &com : _commands)
-    {
-       MarsExplorer explorer(com);
-       _explorers.push_back(explorer);
-    }
-
-
-}
-
-void MarsPlan::init_actions(const std::string &filename) 
+#ifndef __UT__
+void MarsPlan::dispatch_command_from_file(const std::string &filename) 
 {
     _parser.load(filename);
     //std::string contents = std::string("5 5\n1 2 N\nLMLMLMLMM");
@@ -50,13 +31,14 @@ void MarsPlan::init_actions(const std::string &filename)
     _parser.get_commands(_commands);
     _parser.get_edge(_edge);
     
-    _grid = new Grid(_edge.x, _edge.y);
+    _grid = new StateGrid(_edge.x, _edge.y);
     for (const auto &com : _commands)
     {
-       MarsExplorer *explorer =  new MarsExplorer(com);
+       Explorer *explorer =  new Explorer(com);
        _explorers.push_back(*explorer);
     }
 }
+#endif
 
 void MarsPlan::exec()
 {
@@ -68,7 +50,7 @@ void MarsPlan::exec()
 
 void MarsPlan::run(const std::string &instruction_str)
 {
-    init_command(instruction_str);
+    dispatch_command(instruction_str);
     exec();
 }
 

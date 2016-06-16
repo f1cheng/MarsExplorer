@@ -1,29 +1,29 @@
 #include <iostream>
 #include <cstring>
 
-#include "Grid.h"
+#include "StateGrid.h"
 
-Grid::Grid(int x, int y) 
+StateGrid::StateGrid(int x, int y) 
 {
     _edge.x = x;
     _edge.y = y;
 
     int _x = x+1, _y = y+1;
-    _coords = new int *[_x];
+    _states = new int *[_x];
     for (int i=0; i < _x; i++)
     {
-       _coords[i] = new int [_y](); 
+       _states[i] = new int [_y](); 
     }
 }
 
-Grid::~Grid()
+StateGrid::~StateGrid()
 {
     for (int i=0; i < (_edge.x + 1); i++)
-        delete [] _coords[i];
-    delete [] _coords; 
+        delete [] _states[i];
+    delete [] _states; 
 }
 
-State Grid::check_pos(Position &pos)
+State StateGrid::check_pos(Position &pos)
 {
     /* range should be check firstly */
     if (out_of_range(pos))
@@ -46,18 +46,18 @@ State Grid::check_pos(Position &pos)
  * not stay there to occupy a posion.
 */
 
-void Grid::set_edge(int x, int y)
+void StateGrid::set_edge(int x, int y)
 {
     _edge.x = x;
     _edge.y = y;
 }
 
-Coordinate Grid::get_edge(void)
+Coordinate StateGrid::get_edge(void)
 {
     return _edge;
 }
 
-bool Grid::out_of_range(Position &pos)
+bool StateGrid::out_of_range(Position &pos)
 {
     if((pos.coor.x > _edge.x) ||
        (pos.coor.y > _edge.y))
@@ -69,16 +69,16 @@ bool Grid::out_of_range(Position &pos)
       
 }
 
-void Grid::set_occupied(Position &pos)
+void StateGrid::set_occupied(Position &pos)
 {
     if (out_of_range(pos))
     {
         return;
     }
-    _coords[pos.coor.x][pos.coor.y] = OCCUPIED;
+    _states[pos.coor.x][pos.coor.y] = OCCUPIED;
 }
 
-bool Grid::is_occupied(Position &pos)
+bool StateGrid::is_occupied(Position &pos)
 {
-    return _coords[pos.coor.x][pos.coor.y] == OCCUPIED;
+    return _states[pos.coor.x][pos.coor.y] == OCCUPIED;
 }    

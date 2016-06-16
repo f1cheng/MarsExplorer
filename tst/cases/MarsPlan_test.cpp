@@ -18,264 +18,174 @@ public:
     {
     };
 
-    void test1(const std::string &contents)
+    void move_as_expected(const std::string &cmds, Position expect_pos)
     {
-        plan.run(contents);
+        plan.run(cmds);
         get_pos_for_explorer(0);
+        EXPECT_EQ(expect_pos, dest_pos);    
     };
 
-    void test2(const std::string &contents, Position expect_pos)
+    void move_as_expected_for_pos_out_of_range(const std::string &cmds, Position expect_pos)
     {
-        plan.run(contents);
+        plan.run(cmds);
         get_pos_for_explorer(0);
-        //Position expect_pos = {1, 2, NORTH};
-        EXPECT_EQ(expect_pos, test_pos);    
-   
+        EXPECT_EQ(expect_pos, dest_pos);    
+        EXPECT_EQ(OUT_OF_RANGE, explorers[0].get_state());    
     };
 
+
+    void move_as_expected_for_pos_occupied(const std::string &cmds, Position expect_pos)
+    {
+        plan.run(cmds);
+        get_pos_for_explorer(1);
+        EXPECT_EQ(expect_pos, dest_pos);    
+        EXPECT_EQ(OCCUPIED, explorers[1].get_state());    
+    };
 
     void get_pos_for_explorer(int i)
     {
         explorers = plan.get_explorers();
-        test_pos = explorers[i].get_pos();  
+        dest_pos = explorers[i].get_pos();  
     };
 
-    ~MarsTesting(){};
+    virtual ~MarsTesting(){};
+
 private:
-protected:
     MarsPlan plan;
-    std::vector<MarsExplorer> explorers;
-    Position test_pos;
+    std::vector<Explorer> explorers;
+    Position dest_pos;
 };
 
-TEST_F(MarsTesting, testxxxx1)
+TEST_F(MarsTesting, turn_left__move_from_east_to_north)
 {
-    std::string contents = std::string("5 5\n1 2 E\nL");
-    plan.run(contents);
-    EXPECT_EQ(0, 0);
-}
-
-//TEST_F(turn_left_test, east_to_north)
-TEST_F(MarsTesting, east_to_north)
-{
-
-    std::string contents = std::string("5 5\n1 2 E\nL");
-
-    //MarsPlan plan(contents);
-    //plan.exec();
-    test1(contents);
+    std::string cmds = std::string("5 5\n1 2 E\nL");
     Position expect_pos = {1, 2, NORTH};
-    EXPECT_EQ(expect_pos, test_pos);    
-    //std::vector<MarsExplorer> explorers = plan.get_explorers();
-    //Position p1 = {1, 2, NORTH};
-    //EXPECT_EQ(p1, explorers[0].get_pos());    
+    move_as_expected(cmds, expect_pos);
 }
 
-TEST_F(MarsTesting, east_turn_left_to_north2)
+TEST_F(MarsTesting, turn_left__move_from_sourth_to_east)
 {
+    std::string cmds = std::string("5 5\n1 2 S\nL");
+    Position expect_pos = {1, 2, EAST};
+    move_as_expected(cmds, expect_pos);
+}
 
-    std::string contents = std::string("5 5\n1 2 E\nL");
+TEST_F(MarsTesting, turn_left__move_from_west_to_sourth)
+{
+    std::string cmds = std::string("5 5\n1 2 W\nL");
+    Position expect_pos = {1, 2, SOURTH};
+    move_as_expected(cmds, expect_pos);
+}
 
+
+TEST_F(MarsTesting, turn_left__move_from_north_to_west)
+{
+    std::string cmds = std::string("5 5\n1 2 N\nL");
+    Position expect_pos = {1, 2, WEST};
+    move_as_expected(cmds, expect_pos);
+}
+
+TEST_F(MarsTesting, turn_right__move_from_east_to_sourth)
+{
+    std::string cmds = std::string("5 5\n1 2 E\nR");
+    Position expect_pos = {1, 2, SOURTH};
+    move_as_expected(cmds, expect_pos);
+}
+
+TEST_F(MarsTesting, turn_right__move_from_sourth_to_west)
+{
+    std::string cmds = std::string("5 5\n1 2 S\nR");
+    Position expect_pos = {1, 2, WEST};
+    move_as_expected(cmds, expect_pos);
+}
+
+
+TEST_F(MarsTesting, turn_right__move_from_west_to_north)
+{
+    std::string cmds = std::string("5 5\n1 2 W\nR");
     Position expect_pos = {1, 2, NORTH};
-    test2(contents, expect_pos);
-    //std::vector<MarsExplorer> explorers = plan.get_explorers();
-    //Position p1 = {1, 2, NORTH};
-    //EXPECT_EQ(p1, explorers[0].get_pos());    
+    move_as_expected(cmds, expect_pos);
 }
 
 
-
-
-TEST(turn_left_test, sourth_to_east)
+TEST_F(MarsTesting, turn_right__move_from_north_to_east)
 {
+    std::string cmds = std::string("5 5\n1 2 N\nR");
+    Position expect_pos = {1, 2, EAST};
+    move_as_expected(cmds, expect_pos);
+}
 
-    std::string contents = std::string("5 5\n1 2 S\nL");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, EAST};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
+TEST_F(MarsTesting, move_forward__one_step_to_east)
+{
+    std::string cmds = std::string("5 5\n1 2 E\nM");
+    Position expect_pos = {2, 2, EAST};
+    move_as_expected(cmds, expect_pos);
 }
 
 
-TEST(turn_left_test, west_to_sourth)
+TEST_F(MarsTesting, move_forward__one_step_to_sourth)
 {
-
-    std::string contents = std::string("5 5\n1 2 W\nL");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, SOURTH};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
+    std::string cmds = std::string("5 5\n1 2 S\nM");
+    Position expect_pos = {1, 1, SOURTH};
+    move_as_expected(cmds, expect_pos);
 }
 
 
-TEST(turn_left_test, north_west)
+TEST_F(MarsTesting, move_forward__one_step_to_west)
 {
-
-    std::string contents = std::string("5 5\n1 2 N\nL");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, WEST};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-TEST(turn_right_test, east_to_sourth)
-{
-
-    std::string contents = std::string("5 5\n1 2 E\nR");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, SOURTH};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-TEST(turn_right_test, sourth_to_west)
-{
-
-    std::string contents = std::string("5 5\n1 2 S\nR");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, WEST};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
+    std::string cmds = std::string("5 5\n1 2 WEST\nM");
+    Position expect_pos = {0, 2, WEST};
+    move_as_expected(cmds, expect_pos);
 }
 
 
-TEST(turn_right_test, west_to_north)
+TEST_F(MarsTesting, move_forward__one_step_to_north)
 {
+    std::string cmds = std::string("5 5\n1 2 NORTH\nM");
+    Position expect_pos = {1, 3, NORTH};
+    move_as_expected(cmds, expect_pos);
+}
 
-    std::string contents = std::string("5 5\n1 2 W\nR");
-    MarsPlan plan(contents);
-    plan.exec();
+TEST_F(MarsTesting, move_cross_to_west_edge_when_out_of_edge_for_east)
+{
+    std::string cmds = std::string("1 2\n1 2 E\nM");
+    Position expect_pos = {0, 2, EAST};
+    move_as_expected(cmds, expect_pos);
+}
 
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, NORTH};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
+TEST_F(MarsTesting, move_cross_to_north_edge_when_out_of_edge_for_sourth)
+{
+    std::string cmds = std::string("1 2\n1 0 S\nM");
+    Position expect_pos = {1, 2, SOURTH};
+    move_as_expected(cmds, expect_pos);
+}
+
+TEST_F(MarsTesting, move_cross_to_east_edge_when_out_of_edge_for_west)
+{
+    std::string cmds = std::string("1 2\n0 2 W\nM");
+    Position expect_pos = {1, 2, WEST};
+    move_as_expected(cmds, expect_pos);
+}
+
+TEST_F(MarsTesting, move_cross_to_sourth_edge_when_out_of_edge_for_north)
+{
+    std::string cmds = std::string("1 2\n1 2 N\nM");
+    Position expect_pos = {1, 0, NORTH};
+    move_as_expected(cmds, expect_pos);
+}
+
+TEST_F(MarsTesting, move_not_allowed_as_cur_pos_out_of_edge)
+{
+    std::string cmds = std::string("1 2\n2 2 N\nM");
+    Position expect_pos = {2, 2, NORTH};
+    move_as_expected_for_pos_out_of_range(cmds, expect_pos);
 }
 
 
-TEST(turn_right_test, north_to_east)
+TEST_F(MarsTesting, move_conflict_test_pos_was_occupied)
 {
-
-    std::string contents = std::string("5 5\n1 2 N\nR");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, EAST};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-TEST(move_forward_test, to_east)
-{
-    std::string contents = std::string("5 5\n1 2 E\nM");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {2, 2, EAST};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-
-TEST(move_forward_test, to_sourth)
-{
-    std::string contents = std::string("5 5\n1 2 S\nM");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 1, SOURTH};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-
-TEST(move_forward_test, to_west)
-{
-    std::string contents = std::string("5 5\n1 2 WEST\nM");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {0, 2, WEST};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-
-TEST(move_forward_test, to_north)
-{
-    std::string contents = std::string("5 5\n1 2 NORTH\nM");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 3, NORTH};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-TEST(move_forward_test, toward_east_when_out_of_edge)
-{
-    std::string contents = std::string("1 2\n1 2 E\nM");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {0, 2, EAST};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-TEST(move_forward_test, toward_sourth_when_out_of_edge)
-{
-    std::string contents = std::string("1 2\n1 0 S\nM");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, SOURTH};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-TEST(move_forward_test, toward_west_when_out_of_edge)
-{
-    std::string contents = std::string("1 2\n0 2 W\nM");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 2, WEST};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-TEST(move_forward_test, toward_north_when_out_of_edge)
-{
-    std::string contents = std::string("1 2\n1 2 N\nM");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {1, 0, NORTH};
-    EXPECT_EQ(p1, explorers[0].get_pos());    
-}
-
-TEST(move_conflict_test, pos_was_occupied)
-{
-    std::string contents = std::string("5 5\n1 2 E\nMM\n1 2 E\nMM");
-    MarsPlan plan(contents);
-    plan.exec();
-
-    std::vector<MarsExplorer> explorers = plan.get_explorers();
-    Position p1 = {2, 2, EAST};
-    EXPECT_EQ(p1, explorers[1].get_pos());    
-    EXPECT_EQ(OCCUPIED, explorers[1].get_state());    
-
-
+    std::string cmds = std::string("5 5\n1 2 E\nMM\n1 2 E\nMM");
+    Position expect_pos = {2, 2, EAST};
+    move_as_expected_for_pos_occupied(cmds, expect_pos);
 }
 

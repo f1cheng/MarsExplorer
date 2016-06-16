@@ -5,14 +5,14 @@
 #include <vector>
 
 #include "Position.h"
-#include "Grid.h"
+#include "StateGrid.h"
 
-class MarsExplorer
+class Explorer
 {
 public:
-    MarsExplorer() {};
-    ~MarsExplorer() {};
-    MarsExplorer(const Command &command);
+    Explorer() {};
+    ~Explorer() {};
+    Explorer(const Command &command);
     void print_pos();
     Position get_pos()
     {
@@ -24,13 +24,13 @@ public:
         return _state;
     };
 
-    void visit(Grid &grid);
+    void visit(StateGrid &grid);
 private:
-    Position lookat_next(Moving moving, Grid &grid);
+    Position lookat_next(Moving moving, StateGrid &grid);
     void left(Position &p);
     void right(Position &p);
-    void forward(Position &p, Grid &grid);
-    void process_edge(Position &p, Grid &grid);
+    void forward(Position &p, StateGrid &grid);
+    void process_edge(Position &p, StateGrid &grid);
 
     std::vector<Moving> _movings;
     Position _curr_pos;

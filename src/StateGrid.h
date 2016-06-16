@@ -4,12 +4,12 @@
 #include <vector>
 #include "Position.h"
 
-class Grid
+class StateGrid
 {
 public:
-    Grid() {};
-    Grid(int x, int y);
-    ~Grid();
+    StateGrid() {};
+    StateGrid(int x, int y);
+    ~StateGrid();
 
     void set_edge(int x, int y);
     Coordinate get_edge(void);
@@ -22,7 +22,7 @@ private:
     bool is_occupied(Position &pos);
 
     Coordinate _edge;
-    int **_coords;
+    int **_states;
 };
 
 #endif

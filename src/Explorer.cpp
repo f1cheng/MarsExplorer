@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "MarsExplorer.h"
+#include "Explorer.h"
    
 static char get_direction(Direction d)
 {
@@ -13,14 +13,14 @@ static char get_direction(Direction d)
     return ' ';
 }
 
-MarsExplorer::MarsExplorer(const Command &command) 
+Explorer::Explorer(const Command &command) 
 {
     _curr_pos = command.pos;
     _movings = command.movings;
 
 }
 
-void MarsExplorer::print_pos()
+void Explorer::print_pos()
 {
     char c = get_direction(_curr_pos.direction);
     std::cout << _curr_pos.coor.x << " " << _curr_pos.coor.y << " " << c << " " << STATES.at(_state)<< " ";
@@ -34,7 +34,7 @@ void MarsExplorer::print_pos()
     }
 }
 
-void MarsExplorer::visit(Grid &grid)
+void Explorer::visit(StateGrid &grid)
 {
     _state = grid.check_pos(_curr_pos);
     if (_state != OK)
@@ -56,7 +56,7 @@ void MarsExplorer::visit(Grid &grid)
     grid.set_occupied(_curr_pos);
 }
 
-Position MarsExplorer::lookat_next(Moving moving, Grid &grid)
+Position Explorer::lookat_next(Moving moving, StateGrid &grid)
 {   
     Position pos =_curr_pos;
     switch (moving)
@@ -76,17 +76,17 @@ Position MarsExplorer::lookat_next(Moving moving, Grid &grid)
     return pos;
 }
 
-void MarsExplorer::left(Position &pos)
+void Explorer::left(Position &pos)
 {
     pos.direction = static_cast<Direction>((pos.direction+3) % 4);
 }
 
-void MarsExplorer::right(Position &pos)
+void Explorer::right(Position &pos)
 {
     pos.direction = static_cast<Direction>((pos.direction+1) % 4);
 }
 
-void MarsExplorer::forward(Position &pos, Grid &grid)
+void Explorer::forward(Position &pos, StateGrid &grid)
 {
     if (pos.direction == EAST)
         pos.coor.x += 1;
@@ -100,7 +100,7 @@ void MarsExplorer::forward(Position &pos, Grid &grid)
     process_edge(pos, grid);
 }
 
-void MarsExplorer::process_edge(Position &pos, Grid &grid)
+void Explorer::process_edge(Position &pos, StateGrid &grid)
 {
     int edge_x, edge_y;
     edge_x = grid.get_edge().x;

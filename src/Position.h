@@ -28,9 +28,9 @@ const std::map<char, Moving> MOVINGS = {{'L', LEFT},
                                         {'R', RIGHT},
                                         {'M', FORWARD}};
 
-const std::map<char, std::string> STATES = {{0, ""},
-                                            {1, "OCCUPIED"},
-                                            {2, "OUT OF RANGE"}};
+const std::map<char, std::string> STATES = {{OK, ""},
+                                            {OCCUPIED, "OCCUPIED"},
+                                            {OUT_OF_RANGE, "OUT OF RANGE"}};
 
 
 typedef struct {

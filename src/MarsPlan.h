@@ -3,22 +3,23 @@
 
 
 #include "InstructionParser.h"
-#include "MarsExplorer.h"
+#include "Explorer.h"
 
 class MarsPlan
 {
 public:
     MarsPlan();
-    MarsPlan(const std::string &instruction_str);
     virtual ~MarsPlan() {};
-    void init_actions(const std::string &filename);
-
-    void run(const std::string &instruction_str);
-    void init_command(const std::string &instruction_str);
+    void dispatch_command(const std::string &instruction_str);
+#ifndef __UT__
+    void dispatch_command_from_file(const std::string &filename);
+#endif
     void exec();
 
+    void run(const std::string &instruction_str);
+
     void print();
-    std::vector<MarsExplorer> &get_explorers()
+    std::vector<Explorer> &get_explorers()
     {
         return _explorers;
     }
@@ -29,8 +30,8 @@ public:
     }; 
 
 private:
-    std::vector<MarsExplorer> _explorers;
-    Grid *_grid; 
+    std::vector<Explorer> _explorers;
+    StateGrid *_grid; 
     std::vector<Position> _dests;     
     
     InstructionParser _parser; 
