@@ -3,6 +3,7 @@
 
 #include <map>
 #include <vector>
+#include <iostream>
 
 typedef enum {
     EAST, SOURTH, WEST, NORTH
@@ -58,5 +59,26 @@ typedef struct {
     Position pos;
     std::vector<Moving> movings;
 } Command;
+
+char get_direction(Direction d);
+inline char get_direction(Direction d)
+{
+    for (std::map<char, Direction>::const_iterator it = DIRECTIONS.begin(); 
+         it != DIRECTIONS.end(); it++)
+    {
+        if (it->second == d)
+            return it->first;
+    }    
+    return ' ';
+}
+
+void print_position(Position p);
+inline void print_position(Position p)
+{
+    char c = get_direction(p.direction);
+    std::cout << " (" << p.coor.x << "," << p.coor.y << "," << c << ")" << std::endl; 
+}
+
+
 
 #endif

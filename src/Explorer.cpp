@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Explorer.h"
-   
+/*   
 static char get_direction(Direction d)
 {
     for (std::map<char, Direction>::const_iterator it = DIRECTIONS.begin(); 
@@ -12,7 +12,7 @@ static char get_direction(Direction d)
     }    
     return ' ';
 }
-
+*/
 Explorer::Explorer(const Command &command) 
 {
     _curr_pos = command.pos;
@@ -36,6 +36,7 @@ void Explorer::print_pos()
 
 void Explorer::visit(StateGrid &grid)
 {
+    _path.push_back(_curr_pos);
     _state = grid.check_pos(_curr_pos);
     if (_state != OK)
     {
@@ -52,6 +53,7 @@ void Explorer::visit(StateGrid &grid)
             break;
         }
         _curr_pos = new_pos;
+        _path.push_back(_curr_pos);
     }
     grid.set_occupied(_curr_pos);
 }

@@ -10,7 +10,11 @@
 class Explorer
 {
 public:
-    Explorer() {};
+    Explorer() 
+    {
+        _path.clear();
+    };
+
     ~Explorer() {};
     Explorer(const Command &command);
     void print_pos();
@@ -25,6 +29,12 @@ public:
     };
 
     void visit(StateGrid &grid);
+
+    void walk_path(std::vector<Position> &path)
+    {
+        path = _path;
+    }
+
 private:
     Position lookat_next(Moving moving, StateGrid &grid);
     void left(Position &p);
@@ -36,6 +46,8 @@ private:
     Position _curr_pos;
     Position _block_pos;
     State _state;
+
+    std::vector<Position> _path;
 };
 
 #endif

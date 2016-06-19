@@ -24,15 +24,16 @@ public:
         return _explorers;
     }
 
-    std::vector<Position> get_destinations()
+    std::map<int, std::vector<Position>> &get_paths()
     {
-       return _dests; 
-    }; 
+        return _paths;
+    }
+    void print_paths();
 
 private:
     std::vector<Explorer> _explorers;
     StateGrid *_grid; 
-    std::vector<Position> _dests;     
+    std::map<int, std::vector<Position>> _paths;
     
     InstructionParser _parser; 
     Coordinate _edge;

@@ -18,6 +18,8 @@ public:
     {
     };
 
+    virtual ~MarsTesting(){};
+
     void move_as_expected(const std::string &cmds, Position expect_pos)
     {
         plan.run(cmds);
@@ -33,7 +35,6 @@ public:
         EXPECT_EQ(OUT_OF_RANGE, explorers[0].get_state());    
     };
 
-
     void move_as_expected_for_pos_occupied(const std::string &cmds, Position expect_pos)
     {
         plan.run(cmds);
@@ -48,13 +49,52 @@ public:
         dest_pos = explorers[i].get_pos();  
     };
 
-    virtual ~MarsTesting(){};
+    void walking_path_as_expected(const std::string  &cmds, 
+                                  const std::map<int, std::vector<Position>> & expected_paths)  
+    {
+        plan.run(cmds);
+        std::map<int, std::vector<Position>> actual_paths = plan.get_paths();  
+        EXPECT_EQ(expected_paths, actual_paths);
+        /*
+        for(std::map<int, std::vector<Position>>::const_iterator it1 = actual_paths.begin(), it2 = expected_paths.begin();
+            it1 != actual_paths.end() && it2 != expected_paths.end(); it1++, it2++)
+        {
+            EXPECT_EQ(it2->second.size(), it1->second.size());
+            EXPECT_EQ(it2->second, it1->second);
+        } */
+ 
+    };
 
 private:
     MarsPlan plan;
     std::vector<Explorer> explorers;
     Position dest_pos;
 };
+
+TEST_F(MarsTesting, 2Explorers_walking_path_matched)
+{
+    std::string cmds = std::string("5 5\n1 2 E\nL\n2 2 E\nMM");
+ 
+    std::map<int, std::vector<Position>>  expected_paths; 
+    std::vector<Position> p;
+    Position pos1 = {1, 2, EAST};
+    Position pos2 = {1, 2, NORTH};
+    p.push_back(pos1);
+    p.push_back(pos2);
+    expected_paths[0] = p;
+
+    p.clear();
+    Position pos11 = {2, 2, EAST};
+    Position pos12 = {3, 2, EAST};
+    Position pos13 = {4, 2, EAST};
+    p.push_back(pos11);
+    p.push_back(pos12);
+    p.push_back(pos13);
+    expected_paths[1] = p;
+
+    walking_path_as_expected(cmds, expected_paths);
+}
+
 
 TEST_F(MarsTesting, turn_left__move_from_east_to_north)
 {
