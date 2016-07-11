@@ -6,16 +6,16 @@
 #include <sstream>
 
 #include "Position.h"
-class InstructionParser
+class Parser
 {
 public:
-   InstructionParser():_filename(), _inputfile() 
+   Parser():_filename(), _inputfile() 
    {
         _commands.clear();
         _contents.clear();
    };
 
-   ~InstructionParser(); 
+   ~Parser(); 
 
    void load(const std::string &filename);
    void load_str(const std::string &contents);

@@ -2,12 +2,8 @@
 #include <cstring>
 
 #include "StateGrid.h"
-
-StateGrid::StateGrid(int x, int y) 
+void StateGrid::init_states(int x, int y)
 {
-    _edge.x = x;
-    _edge.y = y;
-
     int _x = x+1, _y = y+1;
     _states = new int *[_x];
     for (int i=0; i < _x; i++)
@@ -16,11 +12,59 @@ StateGrid::StateGrid(int x, int y)
     }
 }
 
+void StateGrid::init_values(int x, int y)
+{
+    int _x = x+1, _y = y+1;
+    _values = new int *[_x];
+    for (int i=0; i < _x; i++)
+    {
+       _values[i] = new int [_y](); 
+    }
+
+    for (int i = 0; i <= _edge.x; i++)
+    {
+        for (int j = 0; j <= _edge.y; j++)
+        {
+           _values[i][j] = 0;
+        }
+    }
+
+}
+
+void StateGrid::print_values()
+{
+    for (int i = 0; i <= _edge.x; i++)
+    { 
+        for (int j = 0; j <= _edge.y; j++)
+        {
+            std::cout<<"   "<<_values[i][j];
+        }
+        std::cout<<std::endl;
+    }
+}
+
+void StateGrid::set_value(Coordinate coor, int value)
+{
+    _values[coor.x][coor.y] = value;
+}
+
+StateGrid::StateGrid(int x, int y) 
+{
+    _edge.x = x;
+    _edge.y = y;
+    init_states(x, y);
+    init_values(x, y);
+}
+
 StateGrid::~StateGrid()
 {
     for (int i=0; i < (_edge.x + 1); i++)
-        delete [] _states[i];
+    {
+       delete [] _states[i];
+       delete [] _values[i];
+    }
     delete [] _states; 
+    delete [] _values;
 }
 
 State StateGrid::check_pos(Position &pos)
@@ -31,6 +75,22 @@ State StateGrid::check_pos(Position &pos)
         return OUT_OF_RANGE;
     }
     else if (is_occupied(pos))
+    {
+        return OCCUPIED;
+    }
+    else
+    {
+        return OK;
+    }
+}
+
+State StateGrid::check_coor(Coordinate coor)
+{
+    if (out_of_range(coor))
+    {
+        return OUT_OF_RANGE;
+    }
+    else if (is_occupied(coor))
     {
         return OCCUPIED;
     }
@@ -82,3 +142,148 @@ bool StateGrid::is_occupied(Position &pos)
 {
     return _states[pos.coor.x][pos.coor.y] == OCCUPIED;
 }    
+
+bool StateGrid::out_of_range(Coordinate coor)
+{
+    if((coor.x > _edge.x) ||
+       (coor.y > _edge.y))
+        return true;
+    if ((coor.x <0) ||
+        (coor.y <0))
+        return true;
+    return false;
+      
+}
+
+
+bool StateGrid::is_occupied(Coordinate coor)
+{
+    return _states[coor.x][coor.y] == OCCUPIED;
+}    
+
+
+
+std::vector<Coordinate> StateGrid::set_neighbor(Coordinate cur)
+{
+    std::vector<Coordinate> v;
+    Coordinate east, sourth, west, north;
+    east = sourth = west = north = cur;
+    int val = get_value(cur);
+    
+    east.x++;
+    sourth.y--;
+    west.x--;
+    north.y++;
+    adjust(east);
+    adjust(sourth);
+    adjust(west);
+    adjust(north);
+    State state = check_coor(east);
+    int value;
+    value = get_value(east);
+    if ((state == OK) && (value == 0))
+    {
+        v.push_back(east);
+    }
+    state = check_coor(sourth);
+    value = get_value(sourth);
+    if ((state == OK) && (value == 0))
+    {
+        v.push_back(sourth);
+    }
+    state = check_coor(west);
+    value = get_value(west);
+    if ((state == OK) && (value == 0))
+    {
+        v.push_back(west);
+    }
+    state = check_coor(north);
+    value = get_value(north);
+    if ((state == OK) && (value == 0))
+    {
+        v.push_back(north);
+    }
+
+    for (auto const c : v)
+    {
+        set_value(c, val+1);
+    }
+
+    return v;
+}
+
+
+void StateGrid::adjust(Coordinate &coor)
+{
+    int edge_x, edge_y;
+    edge_x = get_edge().x;
+    edge_y = get_edge().y;
+
+    if (coor.x == (edge_x + 1))
+    {
+        coor.x = 0;
+    }
+    else if (coor.x == -1)
+    {
+        coor.x = edge_x;
+    }
+
+    if (coor.y == (edge_y + 1))
+    {
+        coor.y = 0;
+    }
+    else if (coor.y == -1)
+    {
+        coor.y = edge_y;
+    }
+}
+
+int StateGrid::get_value(Coordinate coor)
+{
+    return _values[coor.x][coor.y];
+}
+std::vector<Coordinate> StateGrid::get_pre_neighbors(Coordinate cur)
+{
+    std::vector<Coordinate> v;
+    Coordinate east, sourth, west, north;
+    east = sourth = west = north = cur;
+    int val = get_value(cur);
+    
+    east.x++;
+    sourth.y--;
+    west.x--;
+    north.y++;
+    adjust(east);
+    adjust(sourth);
+    adjust(west);
+    adjust(north);
+    State state = check_coor(east);
+    int value;
+    value = get_value(east);
+    if ((state == OK) && (value == (val-1)))
+    {
+        v.push_back(east);
+    }
+    state = check_coor(sourth);
+    value = get_value(sourth);
+    if ((state == OK) && (value == (val-1)))
+    {
+        v.push_back(sourth);
+    }
+    state = check_coor(west);
+    value = get_value(west);
+    if ((state == OK) && (value == (val-1)))
+    {
+        v.push_back(west);
+    }
+    state = check_coor(north);
+    value = get_value(north);
+    if ((state == OK) && (value == (val-1)))
+    {
+        v.push_back(north);
+    }
+
+    return v;
+}
+
+

@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "InstructionParser.h"
+#include "Parser.h"
 
-InstructionParser::~InstructionParser() 
+Parser::~Parser() 
 {
     if (_inputfile.is_open())
     {
@@ -10,7 +10,7 @@ InstructionParser::~InstructionParser()
     }
 } 
 
-void InstructionParser::parse()
+void Parser::parse()
 {
     std::string line;
     Command command;
@@ -45,7 +45,7 @@ void InstructionParser::parse()
     }
 }
 
-void InstructionParser::load_str(const std::string &contents)
+void Parser::load_str(const std::string &contents)
 {
 
     _contents.str(contents);
@@ -53,7 +53,7 @@ void InstructionParser::load_str(const std::string &contents)
 }
 
 
-void InstructionParser::load(const std::string &filename)
+void Parser::load(const std::string &filename)
 {
     _inputfile.open(filename);
     if (!_inputfile.is_open())
@@ -66,7 +66,7 @@ void InstructionParser::load(const std::string &filename)
     parse();
 }
 
-void InstructionParser::parse_edge(const std::string &line)
+void Parser::parse_edge(const std::string &line)
 {
     _ss.clear(); 
     _ss.str(line);
@@ -78,7 +78,7 @@ void InstructionParser::parse_edge(const std::string &line)
 
 }
 
-void InstructionParser::parse_position(const std::string &line, Command &command)
+void Parser::parse_position(const std::string &line, Command &command)
 {
     int x, y;
     char d;
@@ -102,7 +102,7 @@ void InstructionParser::parse_position(const std::string &line, Command &command
     }
 }
 
-void InstructionParser::parse_action(const std::string &line, Command &command)
+void Parser::parse_action(const std::string &line, Command &command)
 {
     try 
     {
@@ -117,12 +117,12 @@ void InstructionParser::parse_action(const std::string &line, Command &command)
     command.movings.clear();
 }  
 
-void InstructionParser::get_commands(std::vector<Command> &commands)
+void Parser::get_commands(std::vector<Command> &commands)
 {
     commands = _commands;
 }
 
-void InstructionParser::get_edge(Coordinate &edge)
+void Parser::get_edge(Coordinate &edge)
 {
     edge = _edge;
 }

@@ -55,6 +55,18 @@ inline bool operator==(const Position &p1, const Position &p2)
     return false;    
 }
 
+extern bool operator==(const Coordinate &p1, const Coordinate &p2);
+
+inline bool operator==(const Coordinate &p1, const Coordinate &p2)
+{
+    if (p1.x == p2.x &&
+        p1.y == p2.y)
+
+        return true;
+    return false;    
+}
+
+
 typedef struct {
     Position pos;
     std::vector<Moving> movings;
@@ -79,6 +91,12 @@ inline void print_position(Position p)
     std::cout << " (" << p.coor.x << "," << p.coor.y << "," << c << ")" << std::endl; 
 }
 
+
+void   print_coordinate(Coordinate p);
+inline void print_coordinate(Coordinate p)
+{
+    std::cout << " (" << p.x << "," << p.y << ")" << std::endl; 
+}
 
 
 #endif

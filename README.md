@@ -10,8 +10,11 @@ LMLMLMLMM---L(turn left), R(turn right), M(move forward)
 1. Implement wrapping from one edge of the grid to another. (planets are spheres after all)  
 2. Implement obstacle detection before each move to a new square. 
 If a given sequence of commands encounters an obstacle, 
-the rover moves up to the last possible point and reports the obstacle.
-
+the rover moves up to the last possible point and reports the obstacle.  
+  
+3. print path  
+4. select a shortest path around obstacle, continue original planed routine.   
+5. to refresh for moving  
 
 *Test Input:*   
 5 5  

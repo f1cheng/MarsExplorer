@@ -2,24 +2,25 @@
 #define MARS_PLAN_H_ 
 
 
-#include "InstructionParser.h"
+#include "Parser.h"
 #include "Explorer.h"
+#include "MoveStrategy.h"
 
-class MarsPlan
+class Controller
 {
 public:
-    MarsPlan();
-    virtual ~MarsPlan() {};
+    Controller();
+    virtual ~Controller() {};
     void dispatch_command(const std::string &instruction_str);
 #ifndef __UT__
     void dispatch_command_from_file(const std::string &filename);
 #endif
-    void exec();
+    void exec(MoveStrategy *m);
 
     void run(const std::string &instruction_str);
 
     void print();
-    std::vector<Explorer> &get_explorers()
+    std::vector<Explorer> &get_exps()
     {
         return _explorers;
     }
@@ -35,7 +36,7 @@ private:
     StateGrid *_grid; 
     std::map<int, std::vector<Position>> _paths;
     
-    InstructionParser _parser; 
+    Parser _parser; 
     Coordinate _edge;
     std::vector<Command> _commands;
 };

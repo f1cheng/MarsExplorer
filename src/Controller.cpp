@@ -1,14 +1,13 @@
 #include <iostream>
 
-#include "MarsPlan.h"
+#include "Controller.h"
 
-MarsPlan::MarsPlan()
+Controller::Controller()
 {
     _paths.clear();
-    _commands.clear(); 
 }
 
-void MarsPlan::dispatch_command(const std::string &instruction_str)
+void Controller::dispatch_command(const std::string &instruction_str)
 {
     _parser.load_str(instruction_str);
     _parser.get_commands(_commands);
@@ -17,43 +16,48 @@ void MarsPlan::dispatch_command(const std::string &instruction_str)
     _grid = new StateGrid(_edge.x, _edge.y);
     for (const auto &com : _commands)
     {
-       Explorer explorer(com);
-       _explorers.push_back(explorer);
+       Explorer e;
+       e.init(com.pos, com.movings, _grid);
+       _explorers.push_back(e);
     }
 }
 
 #ifndef __UT__
-void MarsPlan::dispatch_command_from_file(const std::string &filename) 
+void Controller::dispatch_command_from_file(const std::string &filename) 
 {
     _parser.load(filename);
     //std::string contents = std::string("5 5\n1 2 N\nLMLMLMLMM");
-    //_parser.load_str(contents);
     _parser.get_commands(_commands);
     _parser.get_edge(_edge);
     
     _grid = new StateGrid(_edge.x, _edge.y);
     for (const auto &com : _commands)
     {
-       Explorer *explorer =  new Explorer(com);
-       _explorers.push_back(*explorer);
+       Explorer e;
+       e.init(com.pos, com.movings, _grid);
+       _explorers.push_back(e);
     }
+
 }
 #endif
 
-void MarsPlan::exec()
+void Controller::exec(MoveStrategy *strategy)
 {
     int i = 0;
     for (auto &mar : _explorers)
     {
-        mar.visit(*_grid);
-        mar.walk_path(_paths[i++]);
+        mar.execute(strategy);
+        mar.walk_path(_paths[i]);
+        //_paths[i] = mar.get_path();
+        i++;
     }
 }
 
-void MarsPlan::print_paths()
+void Controller::print_paths()
 {
    for (size_t i = 0; i < _paths.size(); i++)
    {
+       
        for (auto &p : _paths[i])
        {
            print_position(p);
@@ -62,20 +66,16 @@ void MarsPlan::print_paths()
    }  
 
 }
+
 //options: commands, edge as the params
-void MarsPlan::run(const std::string &instruction_str)
+void Controller::run(const std::string &instruction_str)
 {
-    dispatch_command(instruction_str);
-    exec();
+    //dispatch_command(instruction_str);
+    //exec(strategy);
 }
 
-void MarsPlan::print()
+void Controller::print()
 {
-    std::cout <<"\nOutput:"<<std::endl;
-    for (auto &mar : _explorers)
-    {
-        mar.print_pos();
-    }
-    std::cout <<"\npaths: \n";
+    std::cout <<"\nOutput: \n";
     print_paths();
 }    

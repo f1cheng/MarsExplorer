@@ -6,48 +6,44 @@
 
 #include "Position.h"
 #include "StateGrid.h"
+#include "MoveStrategy.h"
 
 class Explorer
 {
+
 public:
-    Explorer() 
-    {
-        _path.clear();
-    };
-
+    Explorer() {};
     ~Explorer() {};
-    Explorer(const Command &command);
-    void print_pos();
-    Position get_pos()
+
+    void init(Position start, std::vector<Moving> movings, StateGrid *grid)
     {
-        return _curr_pos;
+       _start = start; 
+       _movings = movings;
+       _grid = grid;
     };
 
-    State get_state()
+    void execute(MoveStrategy *p); 
+/*
+    void execute(MoveStrategy *p) 
     {
-        return _state;
+        p->visit(_start, _movings, _grid);
     };
-
-    void visit(StateGrid &grid);
-
+*/
     void walk_path(std::vector<Position> &path)
     {
         path = _path;
-    }
-
+    };
+    std::vector<Position> get_path()
+    {
+        return _path;
+    };
+    
 private:
-    Position lookat_next(Moving moving, StateGrid &grid);
-    void left(Position &p);
-    void right(Position &p);
-    void forward(Position &p, StateGrid &grid);
-    void process_edge(Position &p, StateGrid &grid);
-
     std::vector<Moving> _movings;
-    Position _curr_pos;
-    Position _block_pos;
-    State _state;
-
+    Position _start;
+    StateGrid *_grid;
     std::vector<Position> _path;
+
 };
 
 #endif
