@@ -6,7 +6,7 @@ class MovePlanA : public MoveStrategy
 {
 
 public:
-    //MovePlanA() {};
+    MovePlanA() {};
     virtual ~MovePlanA() {};
 
     std::vector<Position> get_path()
@@ -16,8 +16,7 @@ public:
 
     virtual void visit(Position start, std::vector<Moving> movings, StateGrid *grid);
 
-    void pure_visit(Position start, std::vector<Moving> moves);
-
+private:
     void init(Position pos, std::vector<Moving> movings, StateGrid *grid)
     {
         _path.clear();
@@ -25,14 +24,14 @@ public:
         _movings = movings; 
         _grid = grid;
     };
+    void pure_visit(Position start, std::vector<Moving> moves);
 
     std::vector<Moving> calculate_movings(Direction orig, std::vector<Coordinate> coors);
-    std::vector<Moving> get_movings(Coordinate s, Coordinate d, Direction src, Direction &des); 
+    std::vector<Moving> get_neighbor_movings(Coordinate s, Coordinate d, Direction src, Direction &des); 
 
-    Direction neighbor_direction(Coordinate s, Coordinate d); 
+    Direction get_neighbor_direction(Coordinate s, Coordinate d); 
     std::vector<Moving> turn(Direction src, Direction des);
 
-private:
     std::vector<Coordinate>  move_around(Position curr_pos, std::vector<Moving> movings);
     std::vector<Coordinate> shortest_path(Coordinate cur, Coordinate dest);
     std::vector<Coordinate> list_shortest_path_coors(Coordinate dest);

@@ -242,6 +242,7 @@ int StateGrid::get_value(Coordinate coor)
 {
     return _values[coor.x][coor.y];
 }
+
 std::vector<Coordinate> StateGrid::get_pre_neighbors(Coordinate cur)
 {
     std::vector<Coordinate> v;

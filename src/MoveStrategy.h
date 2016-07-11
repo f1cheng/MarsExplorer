@@ -10,7 +10,6 @@ public:
     virtual ~MoveStrategy() {};
 
     virtual void visit(Position start, std::vector<Moving> movings, StateGrid *grid) = 0;
-
     virtual std::vector<Position> get_path() 
     {
         return _path;

@@ -4,14 +4,12 @@
 void MovePlanA::visit(Position start, std::vector<Moving> movings, StateGrid *grid)
 {
     init(start, movings, grid);    
-
     _path.push_back(_start);
     State state = _grid->check_pos(_start);
     if (state != OK)
     {
         return;
     }
-
     std::vector<Moving> new_movings = _movings;
     Position cur_pos = _start;
     for (auto const moving : _movings)
@@ -20,14 +18,12 @@ void MovePlanA::visit(Position start, std::vector<Moving> movings, StateGrid *gr
         state = _grid->check_pos(new_pos);
         if (state == OCCUPIED)
         {
-            //std::cout<< "occupied"<<std::endl;
             break;
         }
         new_movings.erase(new_movings.begin());
         cur_pos = new_pos;
         _path.push_back(cur_pos);
     }
-    
     if (state != OCCUPIED)
     {
         _grid->set_occupied(cur_pos);
@@ -42,9 +38,7 @@ void MovePlanA::visit(Position start, std::vector<Moving> movings, StateGrid *gr
 
         std::vector<Moving> movings = calculate_movings(cur_pos.direction, coors);
         pure_visit(cur_pos, movings);  
-     
     }
-
 }
 
 
@@ -182,7 +176,7 @@ std::vector<Moving> MovePlanA::calculate_movings(Direction orig, std::vector<Coo
     for(std::vector<Coordinate>::iterator it = coors.begin(); it != (coors.end()-1); it++)
     {
 
-       movings = get_movings(*it, *(it+1), orig, des); 
+       movings = get_neighbor_movings(*it, *(it+1), orig, des); 
        total.insert(total.end(), movings.begin(), movings.end());
        orig = des;
     }
@@ -190,10 +184,10 @@ std::vector<Moving> MovePlanA::calculate_movings(Direction orig, std::vector<Coo
 }
 
 
-std::vector<Moving> MovePlanA::get_movings(Coordinate s, Coordinate d, Direction src, Direction &des) 
+std::vector<Moving> MovePlanA::get_neighbor_movings(Coordinate s, Coordinate d, Direction src, Direction &des) 
 {
     std::vector<Moving> moves;
-    des = neighbor_direction(s, d);
+    des = get_neighbor_direction(s, d);
     moves = turn(src, des);
     moves.push_back(FORWARD);
     return moves;
@@ -243,7 +237,7 @@ std::vector<Moving> MovePlanA::turn(Direction src, Direction des)
     return moves;
 }
 
-Direction MovePlanA::neighbor_direction(Coordinate s, Coordinate d) 
+Direction MovePlanA::get_neighbor_direction(Coordinate s, Coordinate d) 
 {
     //moving direction
     if ((d.y == s.y) && ((s.x + 1) == d.x)) 

@@ -67,13 +67,6 @@ void Controller::print_paths()
 
 }
 
-//options: commands, edge as the params
-void Controller::run(const std::string &instruction_str)
-{
-    //dispatch_command(instruction_str);
-    //exec(strategy);
-}
-
 void Controller::print()
 {
     std::cout <<"\nOutput: \n";

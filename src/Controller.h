@@ -17,7 +17,7 @@ public:
 #endif
     void exec(MoveStrategy *m);
 
-    void run(const std::string &instruction_str);
+    //void run(const std::string &str, MoveStrategy *m);
 
     void print();
     std::vector<Explorer> &get_exps()
