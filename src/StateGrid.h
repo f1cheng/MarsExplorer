@@ -37,7 +37,6 @@ private:
     bool out_of_range(Coordinate coor);
     bool is_occupied(Coordinate coor);
 
-
     Coordinate _edge;
     int **_states;
     int **_values;
