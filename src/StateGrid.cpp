@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <unistd.h>
 
 #include "StateGrid.h"
 void StateGrid::init_states(int x, int y)
@@ -31,13 +32,56 @@ void StateGrid::init_values(int x, int y)
 
 }
 
-void StateGrid::print_values()
+void StateGrid::init_plane(int x, int y)
 {
+    int _x = x+1, _y = y+1;
+    _plane = new char *[_x];
+    for (int i=0; i < _x; i++)
+    {
+       _plane[i] = new char [_y](); 
+    }
+}
+
+void StateGrid::set_blocked(Position pos)
+{
+    set_occupied(pos);
+    trace(pos);
+}
+
+void StateGrid::trace(Position pos)
+{
+    sleep(1);
+    std::system("clear");
+ 
     for (int i = 0; i <= _edge.x; i++)
     { 
         for (int j = 0; j <= _edge.y; j++)
         {
-            std::cout<<"   "<<_values[i][j];
+            _plane[i][j] = '0';
+        }
+    }
+ 
+    char sky = '0';
+    sky = get_direction(pos.direction);
+    _plane[_edge.y-pos.coor.y][pos.coor.x] = sky; 
+
+    for (int i = 0; i <= _edge.x; i++)
+    { 
+        for (int j = 0; j <= _edge.y; j++)
+        {
+            if (_states[i][j] == OCCUPIED)
+            {
+                sky = '*';
+                _plane[_edge.y-j][i] = sky; 
+            }
+        }
+    }
+ 
+    for (int i = 0; i <= _edge.x; i++)
+    { 
+        for (int j = 0; j <= _edge.y; j++)
+        {
+            std::cout<<"   "<<_plane[i][j];
         }
         std::cout<<std::endl;
     }
@@ -54,6 +98,7 @@ StateGrid::StateGrid(int x, int y)
     _edge.y = y;
     init_states(x, y);
     init_values(x, y);
+    init_plane(x, y);
 }
 
 StateGrid::~StateGrid()
@@ -62,9 +107,11 @@ StateGrid::~StateGrid()
     {
        delete [] _states[i];
        delete [] _values[i];
+       delete [] _plane[i];
     }
     delete [] _states; 
     delete [] _values;
+    delete [] _plane;
 }
 
 State StateGrid::check_pos(Position &pos)

@@ -22,17 +22,22 @@ public:
        _grid = grid;
     };
 
-    void execute(MoveStrategy *p); 
-/*
-    void execute(MoveStrategy *p) 
-    {
-        p->visit(_start, _movings, _grid);
-    };
-*/
+    void search_path(MoveStrategy *p); 
+    
     void walk_path(std::vector<Position> &path)
     {
         path = _path;
+        for (auto const p : _path)
+        {
+            move_view(p);
+        }
     };
+
+    void move_view(Position p)
+    {
+        _grid->trace(p);
+    };
+
     std::vector<Position> get_path()
     {
         return _path;

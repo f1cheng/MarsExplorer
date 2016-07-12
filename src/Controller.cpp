@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 
 #include "Controller.h"
 
@@ -40,21 +41,29 @@ void Controller::dispatch_command_from_file(const std::string &filename)
 
 }
 #endif
+void Controller::set_blocked_view(Position p)
+{
+    _grid->set_blocked(p);
+}
 
 void Controller::exec(MoveStrategy *strategy)
 {
     int i = 0;
     for (auto &mar : _explorers)
     {
-        mar.execute(strategy);
+        mar.search_path(strategy);
         mar.walk_path(_paths[i]);
         //_paths[i] = mar.get_path();
+        set_blocked_view(mar.get_path().back());
         i++;
+        sleep(5);
     }
 }
 
 void Controller::print_paths()
 {
+/*
+   std::cout <<"Output: \n";
    for (size_t i = 0; i < _paths.size(); i++)
    {
        
@@ -64,11 +73,5 @@ void Controller::print_paths()
        }
        std::cout << std::endl;
    }  
-
+*/
 }
-
-void Controller::print()
-{
-    std::cout <<"\nOutput: \n";
-    print_paths();
-}    

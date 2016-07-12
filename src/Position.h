@@ -88,7 +88,7 @@ void print_position(Position p);
 inline void print_position(Position p)
 {
     char c = get_direction(p.direction);
-    std::cout << " (" << p.coor.x << "," << p.coor.y << "," << c << ")" << std::endl; 
+    std::cout << "(" << p.coor.x << "," << p.coor.y << "," << c << ")" << std::endl; 
 }
 
 

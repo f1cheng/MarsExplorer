@@ -17,9 +17,6 @@ public:
 #endif
     void exec(MoveStrategy *m);
 
-    //void run(const std::string &str, MoveStrategy *m);
-
-    void print();
     std::vector<Explorer> &get_exps()
     {
         return _explorers;
@@ -29,8 +26,10 @@ public:
     {
         return _paths;
     }
+
     void print_paths();
 
+    void set_blocked_view(Position p);
 private:
     std::vector<Explorer> _explorers;
     StateGrid *_grid; 

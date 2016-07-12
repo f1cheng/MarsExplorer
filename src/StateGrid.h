@@ -17,7 +17,8 @@ public:
     void set_value(Coordinate coor, int value);
     State check_pos(Position &pos);
 
-    void print_values();
+    void trace(Position pos); 
+    void set_blocked(Position pos);
 
     std::vector<Coordinate> set_neighbor(Coordinate cur);
     int get_value(Coordinate coor);
@@ -28,6 +29,7 @@ private:
     void adjust(Coordinate &coor);
     void init_states(int x, int y);
     void init_values(int x, int y);
+    void init_plane(int x, int y);    
 
     bool out_of_range(Position &pos);
     bool is_occupied(Position &pos);
@@ -39,6 +41,7 @@ private:
     Coordinate _edge;
     int **_states;
     int **_values;
+    char **_plane;
 };
 
 #endif

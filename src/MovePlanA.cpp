@@ -26,7 +26,8 @@ void MovePlanA::visit(Position start, std::vector<Moving> movings, StateGrid *gr
     }
     if (state != OCCUPIED)
     {
-        _grid->set_occupied(cur_pos);
+        //_grid->set_occupied(cur_pos);
+        //_grid->print_movings(cur_pos);
     }
     else
     {
