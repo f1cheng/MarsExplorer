@@ -25,6 +25,7 @@ public:
     std::vector<Coordinate> get_pre_neighbors(Coordinate cur);
 
     State check_coor(Coordinate coor);
+    void reset_values(void);
 private:
     void adjust(Coordinate &coor);
     void init_states(int x, int y);

@@ -285,7 +285,6 @@ std::vector<Coordinate> MovePlanA::shortest_path(Coordinate cur, Coordinate dest
             std::vector<Coordinate> coors2 = _grid->set_neighbor(c);
             total.insert(total.end(), coors2.begin(), coors2.end());
         }
-      
         coors = total;
         i++;
     }

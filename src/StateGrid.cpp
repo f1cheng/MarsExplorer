@@ -32,6 +32,19 @@ void StateGrid::init_values(int x, int y)
 
 }
 
+void StateGrid::reset_values(void)
+{
+    for (int i = 0; i <= _edge.x; i++)
+    {
+        for (int j = 0; j <= _edge.y; j++)
+        {
+           _values[i][j] = 0;
+        }
+    }
+
+}
+
+
 void StateGrid::init_plane(int x, int y)
 {
     int _x = x+1, _y = y+1;

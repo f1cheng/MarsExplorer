@@ -23,6 +23,7 @@ private:
         _start = pos;
         _movings = movings; 
         _grid = grid;
+        _grid->reset_values();
     };
     void pure_visit(Position start, std::vector<Moving> moves);
 
