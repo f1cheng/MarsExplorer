@@ -26,16 +26,17 @@ public:
 
     State check_coor(Coordinate coor);
     void reset_values(void);
+
+    bool out_of_range(Position &pos);
+
 private:
     void adjust(Coordinate &coor);
     void init_states(int x, int y);
     void init_values(int x, int y);
     void init_plane(int x, int y);    
 
-    bool out_of_range(Position &pos);
-    bool is_occupied(Position &pos);
-
     bool out_of_range(Coordinate coor);
+    bool is_occupied(Position &pos);
     bool is_occupied(Coordinate coor);
 
     Coordinate _edge;

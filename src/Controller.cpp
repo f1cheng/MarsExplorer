@@ -41,6 +41,7 @@ void Controller::dispatch_command_from_file(const std::string &filename)
 
 }
 #endif
+
 void Controller::set_blocked_view(Position p)
 {
     _grid->set_blocked(p);
@@ -53,10 +54,13 @@ void Controller::exec(MoveStrategy *strategy)
     {
         mar.search_path(strategy);
         mar.walk_path(_paths[i]);
-        //_paths[i] = mar.get_path();
+        if (mar.get_path().size() == 0)
+            continue;
         set_blocked_view(mar.get_path().back());
         i++;
+#ifndef __UT__
         sleep(5);
+#endif
     }
 }
 

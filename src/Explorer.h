@@ -27,10 +27,12 @@ public:
     void walk_path(std::vector<Position> &path)
     {
         path = _path;
+#ifndef __UT__
         for (auto const p : _path)
         {
             move_view(p);
         }
+#endif
     };
 
     void move_view(Position p)
@@ -47,6 +49,7 @@ private:
     std::vector<Moving> _movings;
     Position _start;
     StateGrid *_grid;
+
     std::vector<Position> _path;
 
 };

@@ -58,7 +58,9 @@ void StateGrid::init_plane(int x, int y)
 void StateGrid::set_blocked(Position pos)
 {
     set_occupied(pos);
+#ifndef __UT__
     trace(pos);
+#endif
 }
 
 void StateGrid::trace(Position pos)
@@ -346,5 +348,3 @@ std::vector<Coordinate> StateGrid::get_pre_neighbors(Coordinate cur)
 
     return v;
 }
-
-

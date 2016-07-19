@@ -4,7 +4,6 @@
 
 #include "Parser.h"
 #include "Explorer.h"
-#include "MoveStrategy.h"
 
 class Controller
 {

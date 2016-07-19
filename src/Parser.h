@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include "Position.h"
+
 class Parser
 {
 public:

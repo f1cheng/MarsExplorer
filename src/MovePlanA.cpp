@@ -24,12 +24,8 @@ void MovePlanA::visit(Position start, std::vector<Moving> movings, StateGrid *gr
         cur_pos = new_pos;
         _path.push_back(cur_pos);
     }
-    if (state != OCCUPIED)
-    {
-        //_grid->set_occupied(cur_pos);
-        //_grid->print_movings(cur_pos);
-    }
-    else
+
+    if (state == OCCUPIED)
     {
         std::vector<Coordinate> coors = move_around(cur_pos, new_movings); 
         if (coors.empty())
@@ -138,7 +134,7 @@ std::vector<Coordinate>  MovePlanA::move_around(Position curr_pos, std::vector<M
     std::vector<Coordinate> coors;
     for (auto const dest : dests)
     {
-        //to filter out all diff coordinates from position
+        // To filter out all diff coordinates from position
         if (std::find(coors.begin(), coors.end(), dest.coor) == coors.end())
         {
             coors.push_back(dest.coor);     
@@ -163,9 +159,6 @@ std::vector<Coordinate>  MovePlanA::move_around(Position curr_pos, std::vector<M
 
 }
 
-
-
-//need to change
 std::vector<Moving> MovePlanA::calculate_movings(Direction orig, std::vector<Coordinate> coors)
 {
     std::vector<Moving> total;
@@ -340,4 +333,3 @@ std::vector<Position>  MovePlanA::lookat_possible_dests(Position pos, std::vecto
 
     return possible_dest_pos;
 }
-

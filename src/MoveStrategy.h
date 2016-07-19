@@ -16,10 +16,6 @@ public:
     };
 
 private:
-    Position _start;
-    std::vector<Moving> _movings;
-    StateGrid *_grid;
-
     std::vector<Position> _path;
 };
 
